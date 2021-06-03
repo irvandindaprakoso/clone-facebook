@@ -9,20 +9,15 @@ function Feed() {
 
     const [posts, setPosts] = useState([]);
 
-    // const fetchPosts = async () => {
-    //     const response = db.collection('posts');
-    //     const data = await response.get();
-    //     data.docs.forEach(item => {
-    //         setPosts([...posts, item.data()])
-    //     })
-    // };
-
     useEffect(() => {
-        db.collection('posts').onSnapshot((snap) =>
-            setPosts(snap.docs.map((doc) => ({id: doc.id, data: doc.data()})))
-        );
-        console.log(posts, 'iy');
-    }, []);
+        db.collection("posts")
+            .orderBy('timestamp', 'desc')
+            .onSnapshot((snap) =>
+                setPosts(snap.docs.map((doc) =>
+                    ({id: doc.id, data: doc.data()})))
+            );
+
+    }, [posts, setPosts]);
 
     return (
         <div className='feed'>
